@@ -1,7 +1,7 @@
 import { arc, select } from "d3";
 import { pieLegend } from "./legend";
 import { piePlot } from "./pieChart";
-import "../style.css";
+import "../../style.css";
 
 const width = (window.innerWidth * 3) / 4;
 const legendWidth = window.innerWidth / 4;
