@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  background-color: #fafafa;
+  justify-content: center;
+  align-items: center;
+}
+
+.legend {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 1rem;
+}
+
+circle {
+  opacity: 0.2;
+}
+
+text {
+  font-size: 20px;
+}
