@@ -9,20 +9,22 @@ const height = window.innerHeight;
 const margin = 40;
 
 const data = [
-  { id: "Italy", index: 0, value: 20, color: "#324477", checked: false },
-  { id: "Germany", index: 1, value: 35, color: "#F38D77", checked: true },
-  { id: "Spain", index: 2, value: 20, color: "#936EFE", checked: true },
-  { id: "France", index: 3, value: 30, color: "#EEF2F5", checked: true },
+  { id: "Italy", index: 0, value: 25, color: "#324477", checked: false },
+  { id: "Germany", index: 1, value: 25, color: "#F38D77", checked: true },
+  { id: "Spain", index: 2, value: 25, color: "#936EFE", checked: true },
+  { id: "France", index: 3, value: 25, color: "#EEF2F5", checked: true },
 ];
 
-const svg = select("body")
+const svg = select("#chart")
   .append("svg")
+  .attr("preserveAspectRatio", "xMinYMin meet")
+  .attr("viewBox", `0 0 ${width} ${height}`)
   .attr("width", width)
-  .attr("height", height)
+  // .attr("height", height)
   .append("g")
   .attr("transform", `translate(${width / 2},${height / 2})`);
 
-const legendDiv = select("body")
+const legendDiv = select("#chart")
   .append("div")
   .attr("class", "legend")
   .attr("width", legendWidth)
