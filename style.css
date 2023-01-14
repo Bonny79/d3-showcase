@@ -1,11 +1,10 @@
 body {
   margin: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   background-color: #fafafa;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 #chart {
@@ -27,10 +26,16 @@ svg {
   gap: 1rem;
 }
 
-circle {
-  opacity: 0.2;
+.checkboxRegion {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
 }
 
-text {
-  font-size: 20px;
+input[type="checkbox"]:checked::before {
+  border-color: red;
+}
+
+input {
+  display: block;
 }

@@ -1,5 +1,5 @@
 import { arc, select } from "d3";
-import { pieLegend } from "./legend";
+import { pieLegend } from "./interactiveLegend";
 import { piePlot } from "./pieChart";
 import "../../style.css";
 
@@ -9,10 +9,10 @@ const height = window.innerHeight;
 const margin = 40;
 
 const data = [
-  { id: "Italy", index: 0, value: 25, color: "#324477", checked: false },
-  { id: "Germany", index: 1, value: 25, color: "#F38D77", checked: true },
-  { id: "Spain", index: 2, value: 25, color: "#936EFE", checked: true },
-  { id: "France", index: 3, value: 25, color: "#EEF2F5", checked: true },
+  { id: "Italy", index: 0, value: 25, color: "#4FDDB0", checked: false },
+  { id: "Germany", index: 1, value: 25, color: "#FFC061", checked: true },
+  { id: "Spain", index: 2, value: 25, color: "#FF7777", checked: true },
+  { id: "France", index: 3, value: 25, color: "#77A6FF", checked: true },
 ];
 
 const svg = select("#chart")
@@ -20,7 +20,6 @@ const svg = select("#chart")
   .attr("preserveAspectRatio", "xMinYMin meet")
   .attr("viewBox", `0 0 ${width} ${height}`)
   .attr("width", width)
-  // .attr("height", height)
   .append("g")
   .attr("transform", `translate(${width / 2},${height / 2})`);
 

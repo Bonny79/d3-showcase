@@ -13,11 +13,13 @@ export const pieLegend = () => {
       .selectAll("div")
       .data(transformedData)
       .join("div")
-      .attr("class", "regionCheckbox");
+      .attr("class", "checkboxRegion");
 
     inputSelection
       .append("input")
       .attr("type", "checkbox")
+      .classed("legend-input", true)
+      .style("accent-color", (d) => d.data[1].color)
       .attr("id", (d) => d.data[1].id)
       .attr("name", (d) => d.data[1].id)
       .attr("checked", (d) => (d.data[1].checked ? true : undefined))
