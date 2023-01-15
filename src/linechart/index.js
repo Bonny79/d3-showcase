@@ -1,4 +1,3 @@
-// todo linechart
 // Include the d3.js library in your HTML file.
 
 // Define height/width/margins.

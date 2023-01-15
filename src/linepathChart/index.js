@@ -1,6 +1,5 @@
 // with line generator
 
-// todo linechart
 // Include the d3.js library in your HTML file.
 
 // Define height/width/margins.
@@ -23,18 +22,10 @@
 
 // Use the call() method to attach the x and y axes to the chart.
 
-import {
-  line,
-  select,
-  scaleLinear,
-  axisBottom,
-  max,
-  extent,
-  axisLeft,
-  curveNatural,
-} from "d3";
+import { select } from "d3";
 
 import "../../style.css";
+import { linePlot } from "./plot";
 
 const margin = {
   top: 50,
@@ -61,45 +52,13 @@ const data = [
 const svg = select("#chart")
   .append("svg")
   .attr("preserveAspectRatio", "xMinYMin meet")
-  .attr("viewBox", `0 0 ${width} ${height}`)
+  .attr("viewBox", [0, 0, width, height])
   .attr("width", width);
 // .attr("height", height)
 
-const execute = () => {
-  var x = scaleLinear()
-    .domain([0, max(data, (d) => d[0])])
-    .range([margin.left, width - margin.right]);
+// Test
+(() => {
+  const plot = linePlot().width(width).height(height).data(data).margin(margin);
 
-  var y = scaleLinear()
-    .domain(extent(data, (d) => d[1]))
-    .range([height - margin.bottom, margin.top]);
-
-  const generator = line()
-    .curve(curveNatural)
-    .x((d) => x(d[0]))
-    .y((d) => y(d[1]));
-
-  const path = generator(data);
-
-  svg
-    .append("g")
-    .selectAll("path")
-    .data([null])
-    .join("path")
-    .attr("d", path)
-    .attr("fill", "none")
-    .attr("stroke", `black`)
-    .attr("stroke-width", "2px");
-
-  svg
-    .append("g")
-    .call(axisBottom(x))
-    .attr("transform", `translate(0,${height - margin.top})`);
-
-  svg
-    .append("g")
-    .call(axisLeft(y))
-    .attr("transform", `translate(${margin.left},0)`);
-};
-
-execute();
+  svg.call(plot);
+})();

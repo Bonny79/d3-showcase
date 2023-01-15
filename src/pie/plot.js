@@ -84,9 +84,5 @@ export const piePlot = () => {
     return arguments.length ? ((data = _), plot) : data;
   };
 
-  plot.arcInstance = function (_) {
-    return arguments.length ? ((arcInstance = _), plot) : arcInstance;
-  };
-
   return plot;
 };
