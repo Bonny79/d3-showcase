@@ -1,3 +1,5 @@
+// with line generator
+
 // todo linechart
 // Include the d3.js library in your HTML file.
 
@@ -29,6 +31,7 @@ import {
   max,
   extent,
   axisLeft,
+  curveNatural,
 } from "d3";
 
 import "../../style.css";
@@ -42,17 +45,17 @@ const margin = {
 const width = window.innerWidth - (margin.right + margin.left);
 const height = window.innerHeight - (margin.top + margin.bottom);
 
-var data = [
-  { x: 0, y: 5 },
-  { x: 1, y: 9 },
-  { x: 2, y: 7 },
-  { x: 3, y: 5 },
-  { x: 4, y: 3 },
-  { x: 5, y: 3.5 },
-  { x: 6, y: 4 },
-  { x: 7, y: 2 },
-  { x: 8, y: 3 },
-  { x: 9, y: 2 },
+const data = [
+  [0, 5],
+  [1, 9],
+  [2, 7],
+  [3, 5],
+  [4, 3],
+  [5, 3.5],
+  [6, 4],
+  [7, 2],
+  [8, 3],
+  [9, 2],
 ];
 
 const svg = select("#chart")
@@ -64,37 +67,29 @@ const svg = select("#chart")
 
 const execute = () => {
   var x = scaleLinear()
-    .domain([0, max(data, (d) => d.x)])
+    .domain([0, max(data, (d) => d[0])])
     .range([margin.left, width - margin.right]);
 
   var y = scaleLinear()
-    .domain(extent(data, (d) => d.y))
+    .domain(extent(data, (d) => d[1]))
     .range([height - margin.bottom, margin.top]);
 
-  const transformedData = data
-    .map((d, i, array) => {
-      if (!array[i + 1]) {
-        return null;
-      }
-      return {
-        x1: x(d.x),
-        y1: y(d.y),
-        x2: x(array[i + 1]?.x || undefined),
-        y2: y(array[i + 1]?.y || undefined),
-      };
-    })
-    .filter((x) => x);
+  const generator = line()
+    .curve(curveNatural)
+    .x((d) => x(d[0]))
+    .y((d) => y(d[1]));
+
+  const path = generator(data);
 
   svg
     .append("g")
-    .selectAll("line")
-    .data(transformedData)
-    .join("line")
-    .attr("x1", (d) => d.x1)
-    .attr("y1", (d) => d.y1)
-    .attr("x2", (d) => d.x2)
-    .attr("y2", (d) => d.y2)
-    .attr("stroke", "black");
+    .selectAll("path")
+    .data([null])
+    .join("path")
+    .attr("d", path)
+    .attr("fill", "none")
+    .attr("stroke", `black`)
+    .attr("stroke-width", "2px");
 
   svg
     .append("g")

@@ -3,10 +3,9 @@ import { pieLegend } from "./userInteraction";
 import { piePlot } from "./plot";
 import "../../style.css";
 
-const width = (window.innerWidth * 3) / 4;
-const legendWidth = window.innerWidth / 4;
+const width = window.innerWidth;
+const legendWidth = window.innerWidth;
 const height = window.innerHeight;
-const margin = 40;
 
 const data = [
   { id: "Italy", index: 0, value: 25, color: "#4FDDB0", checked: false },
@@ -30,7 +29,7 @@ const legendDiv = select("#chart")
   .attr("height", height);
 
 (() => {
-  const plot = piePlot().width(width).height(height).data(data).margin(margin);
+  const plot = piePlot().width(width).height(height).data(data);
 
   svg.call(plot);
 

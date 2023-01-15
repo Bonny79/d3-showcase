@@ -1,17 +1,23 @@
 import { pie, transition, ascending, interpolate, arc } from "d3";
 
+/**
+ * Please use the fluent syntax to give the pie the following properties:
+ * @param width
+ * @param height
+ * @param data
+ * @returns
+ */
 export const piePlot = () => {
   let width;
   let height;
-  let margin;
   let data;
   let arcInstance;
 
   function plot(selection) {
     if (!arcInstance) {
       arcInstance = arc()
-        .innerRadius(Math.min(width, height) / 2.5 - margin * 0.75)
-        .outerRadius(Math.min(width, height) / 2 - margin);
+        .innerRadius((Math.min(width, height) / 2) * 0.75)
+        .outerRadius(Math.min(width, height) / 2);
     }
 
     const transform = pie()
@@ -72,10 +78,6 @@ export const piePlot = () => {
 
   plot.height = function (_) {
     return arguments.length ? ((height = +_), plot) : height;
-  };
-
-  plot.margin = function (_) {
-    return arguments.length ? ((margin = _), plot) : margin;
   };
 
   plot.data = function (_) {
