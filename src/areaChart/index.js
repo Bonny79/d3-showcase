@@ -30,7 +30,6 @@ const svg = select("#chart")
   .attr("preserveAspectRatio", "xMinYMin meet")
   .attr("viewBox", [0, 0, width, height])
   .attr("width", width);
-// .attr("height", height)
 
 // Test
 (() => {
