@@ -1,6 +1,6 @@
 import { arc, select } from "d3";
-import { pieLegend } from "./interactiveLegend";
-import { piePlot } from "./pieChart";
+import { pieLegend } from "./userInteraction";
+import { piePlot } from "./plot";
 import "../../style.css";
 
 const width = (window.innerWidth * 3) / 4;
@@ -29,18 +29,8 @@ const legendDiv = select("#chart")
   .attr("width", legendWidth)
   .attr("height", height);
 
-const generateArc = () =>
-  arc()
-    .innerRadius(Math.min(width, height) / 2.5 - margin * 0.75)
-    .outerRadius(Math.min(width, height) / 2 - margin);
-
 (() => {
-  const plot = piePlot()
-    .width(width)
-    .height(height)
-    .data(data)
-    .margin(margin)
-    .arcInstance(generateArc());
+  const plot = piePlot().width(width).height(height).data(data).margin(margin);
 
   svg.call(plot);
 

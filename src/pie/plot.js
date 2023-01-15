@@ -1,14 +1,19 @@
-import { pie, transition, ascending, interpolate } from "d3";
+import { pie, transition, ascending, interpolate, arc } from "d3";
 
 export const piePlot = () => {
   let width;
   let height;
-  let data;
   let margin;
+  let data;
   let arcInstance;
-  let isResizing;
 
   function plot(selection) {
+    if (!arcInstance) {
+      arcInstance = arc()
+        .innerRadius(Math.min(width, height) / 2.5 - margin * 0.75)
+        .outerRadius(Math.min(width, height) / 2 - margin);
+    }
+
     const transform = pie()
       .value((d) => d[1].value)
       .sort((a, b) => ascending(a[1].index, b[1].index));
@@ -39,26 +44,26 @@ export const piePlot = () => {
         (update) => update.transition(t2).attrTween("d", onUpdate),
         (exit) => exit.transition(t).attrTween("d", onExit).remove()
       );
-  }
 
-  function onUpdate(d) {
-    //* get interpolator function
-    var i = interpolate(this.pieData, d);
-    this.pieData = d;
-    return function (t) {
-      return arcInstance(i(t));
-    };
-  }
+    function onUpdate(d) {
+      //* get interpolator function
+      var i = interpolate(this.pieData, d);
+      this.pieData = d;
+      return function (t) {
+        return arcInstance(i(t));
+      };
+    }
 
-  function onExit(d) {
-    //avoid using spread op, Object.assign has better performance
-    var pathToEndAngle = Object.assign({}, d, {
-      startAngle: d.endAngle,
-    });
-    var i = interpolate(d, pathToEndAngle);
-    return function (t) {
-      return arcInstance(i(t));
-    };
+    function onExit(d) {
+      //avoid using spread op, Object.assign has better performance
+      var pathToEndAngle = Object.assign({}, d, {
+        startAngle: d.endAngle,
+      });
+      var i = interpolate(d, pathToEndAngle);
+      return function (t) {
+        return arcInstance(i(t));
+      };
+    }
   }
 
   plot.width = function (_) {
@@ -69,24 +74,16 @@ export const piePlot = () => {
     return arguments.length ? ((height = +_), plot) : height;
   };
 
-  plot.data = function (_) {
-    return arguments.length ? ((data = _), plot) : data;
-  };
-
-  plot.value = function (_) {
-    return arguments.length ? ((value = _), plot) : value;
-  };
-
-  plot.arcInstance = function (_) {
-    return arguments.length ? ((arcInstance = _), plot) : arcInstance;
-  };
-
   plot.margin = function (_) {
     return arguments.length ? ((margin = _), plot) : margin;
   };
 
-  plot.isResizing = function (_) {
-    return arguments.length ? ((isResizing = _), plot) : isResizing;
+  plot.data = function (_) {
+    return arguments.length ? ((data = _), plot) : data;
+  };
+
+  plot.arcInstance = function (_) {
+    return arguments.length ? ((arcInstance = _), plot) : arcInstance;
   };
 
   return plot;

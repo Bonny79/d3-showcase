@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="chart">
+      <svg width="960" height="500"></svg>
+    </div>
+    <script>
+      var data = [
+        { x: 0, y: 5 },
+        { x: 1, y: 9 },
+        { x: 2, y: 7 },
+        { x: 3, y: 5 },
+        { x: 4, y: 3 },
+        { x: 5, y: 3.5 },
+        { x: 6, y: 4 },
+        { x: 7, y: 2 },
+        { x: 8, y: 3 },
+        { x: 9, y: 2 },
+      ];
+      var svg = d3.select("#chart").append("svg"),
+        margin = { top: 20, right: 20, bottom: 30, left: 50 },
+        width = +svg.attr("width") - margin.left - margin.right,
+        height = +svg.attr("height") - margin.top - margin.bottom,
+        g = svg
+          .append("g")
+          .attr(
+            "transform",
+            "translate(" + margin.left + "," + margin.top + ")"
+          );
+      var x = d3.scaleLinear().rangeRound([0, width]);
+      var y = d3.scaleLinear().rangeRound([height, 0]);
+      var line = d3
+        .line()
+        .x(function (d) {
+          return x(d.x);
+        })
+        .y(function (d) {
+          return y(d.y);
+        });
+      x.domain(
+        d3.extent(data, function (d) {
+          return d.x;
+        })
+      );
+      y.domain(
+        d3.extent(data, function (d) {
+          return d.y;
+        })
+      );
+      g.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+      g.append("g").call(d3.axisLeft(y));
+    </script>
+  </body>
+</html>
