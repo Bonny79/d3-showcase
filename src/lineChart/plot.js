@@ -16,6 +16,7 @@ import {
  * @param data
  * @returns
  */
+
 export const linePlot = () => {
   let width;
   let height;
@@ -28,7 +29,7 @@ export const linePlot = () => {
       .range([margin.left, width - margin.right]);
 
     const fromValueToPixelY = scaleLinear()
-      .domain(extent(data, (d) => d[1]))
+      .domain([0, max(data, (d) => d[1])])
       .range([height - margin.bottom, margin.top]);
 
     const generator = line()
@@ -50,12 +51,12 @@ export const linePlot = () => {
 
     const linePath = selection
       .append("g")
-      .selectAll("line")
+      .selectAll("path")
       .data([null])
       .join("path")
-      .attr("d", path)
       .attr("fill", "none")
-      .attr("stroke", `black`)
+      .attr("stroke", `#334379`)
+      .attr("d", path)
       .attr("stroke-width", "2px");
 
     const offset = linePath.node().getTotalLength();
@@ -66,6 +67,7 @@ export const linePlot = () => {
       .transition()
       .ease(easeLinear)
       .attr("stroke-dashoffset", 0)
+
       .duration(1500);
   }
 
