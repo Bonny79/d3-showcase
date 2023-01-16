@@ -53,7 +53,7 @@ export const linePlot = () => {
       .append("g")
       .selectAll("path")
       .data([null])
-      .join("path")
+      .join("path") //test contribution
       .attr("fill", "none")
       .attr("stroke", `#334379`)
       .attr("d", path)
