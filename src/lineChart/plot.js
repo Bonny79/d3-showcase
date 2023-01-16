@@ -53,7 +53,7 @@ export const linePlot = () => {
       .append("g")
       .selectAll("path")
       .data([null])
-      .join("path") //todo animations on data update
+      .join("path")
       .attr("fill", "none")
       .attr("stroke", `#334379`)
       .attr("d", path)
