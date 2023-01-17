@@ -7,6 +7,9 @@ import {
   axisLeft,
   curveNatural,
   easeLinear,
+  transition,
+  min,
+  scaleTime,
 } from "d3";
 
 /**
@@ -23,10 +26,12 @@ export const linePlot = () => {
   let data;
   let margin;
 
+  const format = timeFormat("%Y-%m-%d");
+
   function plot(selection) {
-    const fromValueToPixelX = scaleLinear()
-      .domain([0, max(data, (d) => d[0])])
-      .range([margin.left, width - margin.right]);
+    const fromValueToPixelX = scaleTime()
+      .domain(extent(data, (d) => d[0]))
+      .range([0, width]);
 
     const fromValueToPixelY = scaleLinear()
       .domain([0, max(data, (d) => d[1])])
@@ -34,29 +39,42 @@ export const linePlot = () => {
 
     const generator = line()
       .curve(curveNatural)
-      .x((d) => fromValueToPixelX(d[0]))
+      .x((d) => {
+        console.log(d[0], fromValueToPixelX());
+        return fromValueToPixelX(d[0]);
+      })
       .y((d) => fromValueToPixelY(d[1]));
 
     const path = generator(data);
+    const t = transition().duration(1000);
 
     selection
-      .append("g")
-      .call(axisBottom(fromValueToPixelX))
-      .attr("transform", `translate(0,${height - margin.top})`);
+      .selectAll("g.y-axis")
+      .data([null]) // * It means, there's just one thing
+      .join("g")
+      .attr("class", "y-axis")
+      .attr("transform", `translate(${margin.left}, 0)`)
+      .transition(t)
+      .call(axisLeft(fromValueToPixelY));
 
-    selection
-      .append("g")
-      .call(axisLeft(fromValueToPixelY))
-      .attr("transform", `translate(${margin.left},0)`);
+    //? x axis
+    // selection
+    //   .selectAll("g.x-axis")
+    //   .data([null])
+    //   .join("g")
+    //   .attr("class", "x-axis")
+    //   .attr("transform", `translate(0, ${height - margin.bottom})`)
+    //   .transition(t)
+    //   .call(axisBottom(fromValueToPixelX));
 
     const linePath = selection
-      .append("g")
       .selectAll("path")
-      .data([null])
-      .join("path") //test contribution
+      .data(data)
+      // .transition()
+      // .duration(3000)
+      .attr("d", path)
       .attr("fill", "none")
       .attr("stroke", `#334379`)
-      .attr("d", path)
       .attr("stroke-width", "2px");
 
     const offset = linePath.node().getTotalLength();

@@ -22,7 +22,7 @@
 
 // Use the call() method to attach the x and y axes to the chart.
 
-import { select } from "d3";
+import { select, timeFormat } from "d3";
 
 import "../../style.css";
 import { linePlot } from "./plot";
@@ -36,18 +36,9 @@ const margin = {
 const width = window.innerWidth - (margin.right + margin.left);
 const height = window.innerHeight - (margin.top + margin.bottom);
 
-const data = [
-  [0, 5],
-  [1, 9],
-  [2, 7],
-  [3, 5],
-  [4, 3],
-  [5, 3.5],
-  [6, 4],
-  [7, 2],
-  [8, 3],
-  [9, 2],
-];
+const format = timeFormat("%Y-%m-%d");
+
+let data = [[format(new Date()), 5]];
 
 const svg = select("#chart")
   .append("svg")
@@ -57,8 +48,18 @@ const svg = select("#chart")
 // .attr("height", height)
 
 // Test
-(() => {
+const plotIt = () => {
   const plot = linePlot().width(width).height(height).data(data).margin(margin);
 
   svg.call(plot);
-})();
+};
+
+function randomIntFromInterval(min, max) {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+setInterval(() => {
+  data = [...data, [format(new Date()), randomIntFromInterval(1, 10)]];
+  plotIt();
+}, 4000);
